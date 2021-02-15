@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "01f0d168-7d88-4b9f-8055-4011a9a01bb6",
+		"name": "Swagger_Pet_Store_JSON_Suite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Operations",
+			"item": [
+				{
+					"name": "Add User into Store",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function getRandomInt(max) {\r",
+									"  return Math.floor(Math.random() * Math.floor(max));\r",
+									"}\r",
+									"\r",
+									"var userName = \"user\"+getRandomInt(1000);\r",
+									"var firstname = \"firstname \"+userName;\r",
+									"var lastname = \"lastname \"+userName;\r",
+									"var email = userName+\"@email.com\";\r",
+									"var password = userName+\"@1234\";\r",
+									"var phone=getRandomInt(100000000);\r",
+									"console.log(\"Jayanta Test username : \"+userName);\r",
+									"console.log(firstname);\r",
+									"console.log(lastname);\r",
+									"console.log(email);\r",
+									"console.log(password);\r",
+									"console.log(phone);\r",
+									"\r",
+									"pm.environment.set(\"userName\",userName);\r",
+									"pm.environment.set(\"firstname\",firstname);\r",
+									"pm.environment.set(\"lastname\",lastname);\r",
+									"pm.environment.set(\"email\",email);\r",
+									"pm.environment.set(\"password\",password);\r",
+									"pm.environment.set(\"phone\",phone);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 0,\r\n    \"username\": \"{{userName}}\",\r\n    \"firstName\": \"{{firstname}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"{{phone}}\",\r\n    \"userStatus\": 0\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/createWithArray",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"createWithArray"
+							]
+						},
+						"description": "Creating a new user using a JSON array object.\n\nParameters used are : uesrname, firstname, lastname, email, password, phone.\n\nResponse : On success response status code should be 200 and message should be \"Ok\"."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Details by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Validate response have username\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+									"});\r",
+									"pm.test(\"Validate response have firstname\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"firstname\");\r",
+									"});\r",
+									"pm.test(\"Validate response have lastname\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"lastname\");\r",
+									"});\r",
+									"pm.test(\"Validate response have email\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+									"});\r",
+									"pm.test(\"Validate response have password\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"password\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/{{userName}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{userName}}"
+							]
+						},
+						"description": "Get user details by username.\nmethod : GET\nurl : https://petstore.swagger.io/v2/user/{{userName}}\n\n{{-userName-}}- pass the user name whose details are required.\n\nResponse : On success response status code should be 200 and response should return complete details of that particular user in json format.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var firstname = \"FirstName updated\";\r",
+									"\r",
+									"pm.environment.set(\"firstname\",firstname);\r",
+									"\r",
+									"console.log(\"updated first name: \"+firstname);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has message\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"username\": \"{{userName}}\",\r\n  \"firstName\": \"{{firstname}}\",\r\n  \"lastName\": \"{{lastname}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"{{phone}}\",\r\n  \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/{{userName}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{userName}}"
+							]
+						},
+						"description": "Update the user details.\nUpdate any of the parameters, i.e lastname : \"Lastname changed\" and then run the request.\n\nResponse : On success response status code should be 200 and message should return the update id i.e message : \"9013685127327378653\".\n"
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response returns session id\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"logged in user session\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/login?userName={{userName}}&password={{password}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "{{userName}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						},
+						"description": "User logs in into system using username and password.\n\nResponse : On success response status code should be 200 and response should return session token that generates after successful login."
+					},
+					"response": []
+				},
+				{
+					"name": "User Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response returns logout success\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"ok\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/logout",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"logout"
+							]
+						},
+						"description": "User Logs out from the system.\n\nResponse : On success response status code should be 200 and message should be \"Ok\"."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete the user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var userName_to_check = pm.environment.get(\"userName\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response returns username that got deleted\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(userName_to_check);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/{{userName}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{userName}}"
+							]
+						},
+						"description": "Delete a particular user from the system by username.\nmethod : DELETE\n\nUrl : https://petstore.swagger.io/v2/user/{{userName}}\n\n{{-userName-}}- pass the user name that needs to be deleted.\n\nResponse : \nresponse should return status code 200 and username that got deleted in message.\n\nexample :\n{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"user413\"\n}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pet operations",
+			"item": [
+				{
+					"name": "Add a new pet in store",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Golden Puppy\"\r\n  },\r\n  \"name\": \"doggieOne\",\r\n  \"photoUrls\": [\r\n    \"http://cdn.akc.org/content/article-body-image/golden_puppy_dog_pictures.jpg\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"puppy\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						},
+						"description": "Add a new pet in store"
+					},
+					"response": []
+				},
+				{
+					"name": "Find pet by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/1",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"1"
+							]
+						},
+						"description": "Find a pet by petId"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Store Operations",
+			"item": [
+				{
+					"name": "Place an Order for Store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"petId\": 1,\r\n  \"quantity\": 3,\r\n  \"shipDate\": \"2021-02-15T09:55:49.357Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
